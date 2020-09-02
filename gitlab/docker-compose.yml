@@ -1,0 +1,28 @@
+version: "3.3"
+services:
+  gitlab:
+    image: gitlab/gitlab-ce
+    restart: always
+    hostname: "gitlab.lab.pepo.dev"
+    environment:
+      GITLAB_OMNIBUS_CONFIG: "from_file('/omnibus_config.rb')"
+    ports:
+      - "8022:22"
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - data:/var/opt/gitlab
+      - logs:/var/log/gitlab
+      - config:/etc/gitlab
+      - ./omnibus_config.rb:/omnibus_config.rb
+  #
+  # gitlab-runner:
+  #   image: gitlab/gitlab-runner
+  #   volumes:
+  #     - ./gitlab-runner/config:/etc/gitlab-runner
+  #     - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  data:
+  logs:
+  config:
