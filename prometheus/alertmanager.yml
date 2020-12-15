@@ -1,0 +1,19 @@
+route:
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 2h
+  receiver: 'slack'
+  routes:
+    - receiver: "slack"
+      group_wait: 10s
+      match_re:
+        severity: error|warning
+      continue: true
+
+receivers:
+- name: 'slack'
+  slack_configs:
+  - api_url: ""
+    channel: "#system-monitoring"
+    send_resolved: true
+    text: "{{ range .Alerts }}<!channel> {{ .Annotations.summary }}\n{{ .Annotations.description }}\n{{ end }}"

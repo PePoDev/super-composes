@@ -1,0 +1,29 @@
+version: '3.7'
+
+services: 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus_data:/prometheus
+      - ./alert-rules.yml:/alertmanager/alert.rules
+    command:
+     - '--config.file=/etc/prometheus/prometheus.yml'
+     - '--storage.tsdb.path=/prometheus'
+     - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+     - '--web.console.templates=/usr/share/prometheus/consoles'
+    user: root
+    ports: 
+      - 9090:9090
+    restart: always
+
+  alert_manager:
+    image: prom/alertmanager
+    container_name: prometheus_alertmanager
+    volumes:
+      - ./alertmanager.yml:/alertmanager.yml
+    command:
+      - '--config.file=/alertmanager.yml'
+    ports:
+      - '9093:9093'

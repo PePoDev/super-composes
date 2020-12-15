@@ -1,0 +1,12 @@
+version: "3"
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ~/kmi.tl.crt:/etc/ssl/kmi.tl.crt
+      - ~/kmi.tl.key:/etc/ssl/kmi.tl.key
+    ports:
+      - "80:80"
+      - "443:443"
